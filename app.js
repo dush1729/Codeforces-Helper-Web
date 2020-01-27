@@ -26,6 +26,10 @@ MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, fu
     fetchContests(contestcollection)
   }, null, true);
 
+  app.get('/', function (req, res) {
+    res.redirect("contests")
+  })
+
   app.get('/contests', function (req, res) {
     contestcollection.find({ phase: "FINISHED" }).sort({ startTimeSeconds: -1 }).toArray((err, contests) => {
       if (err) {
