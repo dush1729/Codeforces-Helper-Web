@@ -1,0 +1,36 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Codeforces Contests</title>
+    <script src="js/contests.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/cyborg/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-l7xaoY0cJM4h9xh1RfazbgJVUZvdtyLWPueWNtLAphf/UbBgOVzqbOTogxPwYLHM" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/contests.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <input type="text" id="contestInput" onkeyup="searchContests()" placeholder="Search contest..">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <ul id="contestsUL" class="list-group">
+                    <% for (var i = 0; i < contests.length;  i++) { %>
+                    <li class="list-group-item">
+                        <a href="https://codeforces.com/contest/<%= contests[i].id %>"><%= contests[i].name %></a>
+                    </li>
+                    <% } %>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

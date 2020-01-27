@@ -1,0 +1,31 @@
+{
+  "name": "codeforces-helper-web",
+  "version": "1.0.0",
+  "description": "codeforces helper web app",
+  "main": "app.js",
+  "dependencies": {
+    "cron": "^1.8.2",
+    "ejs": "^3.0.1",
+    "express": "^4.17.1",
+    "mongodb": "^3.5.2",
+    "request": "^2.88.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dush1729/Codeforces-Helper-Web.git"
+  },
+  "keywords": [
+    "codeforces"
+  ],
+  "author": "dush1729",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dush1729/Codeforces-Helper-Web/issues"
+  },
+  "homepage": "https://github.com/dush1729/Codeforces-Helper-Web#readme"
+}
