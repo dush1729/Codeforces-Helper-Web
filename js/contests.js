@@ -1,6 +1,8 @@
-function searchContests() {
-    var input = document.getElementById('contestInput')
-    var filter = input.value.toUpperCase()
+function searchContests(name) {
+    var filter = name
+    if (name !== null) {
+        filter = document.getElementById('contestInput').value.toUpperCase()
+    }
     var contestsUL = document.getElementById("contestsUL")
     var contests = contestsUL.getElementsByTagName('li')
 
@@ -13,4 +15,9 @@ function searchContests() {
             contests[i].style.display = "none"
         }
     }
+}
+
+function filterContests(name) {
+    document.getElementById('contestInput').value = name
+    searchContests(name)
 }

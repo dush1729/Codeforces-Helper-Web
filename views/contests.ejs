@@ -25,14 +25,23 @@
     <div class="container">
         <div class="row">
             <div class="col">
-                <input type="text" id="contestInput" onkeyup="searchContests()" placeholder="Search contest..">
+                <input class="form-control input-lg" type="text" id="contestInput" onkeyup="searchContests()" placeholder="Type here to search contest..">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col" id="contests_type">
+                <button onclick="filterContests('')" type="button" class="btn btn-outline-warning">All</button>
+                <button onclick="filterContests('Div. 1 + Div. 2')" type="button" class="btn btn-outline-primary">Div. 1 + Div. 2</button>
+                <button onclick="filterContests('Div. 3')" type="button" class="btn btn-outline-success">Div. 3</button>
+                <button onclick="filterContests('Educational')" type="button" class="btn btn-outline-danger">Educational Round</button>
             </div>
         </div>
         <div class="row">
             <div class="col">
                 <iframe
                     src="https://ghbtns.com/github-btn.html?user=dush1729&repo=Codeforces-Helper-Web&type=watch&count=true&size=large"
-                    frameborder="0" scrolling="0" width="170px" height="30px"></iframe>
+                    frameborder="0" scrolling="0" width="170px" height="30px">
+                </iframe>
             </div>
         </div>
         <div class="row">
