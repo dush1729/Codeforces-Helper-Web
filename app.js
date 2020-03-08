@@ -28,7 +28,7 @@ MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, fu
   fetchProblems(problemcollection)
   new CronJob('0 */6 * * *', function () {
     fetchContests(contestcollection)
-    fetchProblems(contestcollection)
+    fetchProblems(problemcollection)
   }, null, true)
 
   app.get('/', function (req, res) {
@@ -36,7 +36,7 @@ MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, fu
   })
 
   app.get('/contests', function (req, res) {
-    contestcollection.find({ phase: "FINISHED" }).sort({ startTimeSeconds: -1 }).toArray((err, contests) => {
+    contestcollection.find().toArray((err, contests) => {
       if (err) {
         throw err
       }
@@ -60,6 +60,8 @@ function fetchContests(contestcollection) {
     }
 
     contests = JSON.parse(body).result
+      .filter(d => d.phase === 'FINISHED')
+      .sort((a, b) => (a.startTimeSeconds > b.startTimeSeconds) ? -1 : +1)
     contestcollection.deleteMany({}).then(function () {
       contestcollection.insertMany(contests, function (db_insert_err, result) {
         if (db_insert_err) {
