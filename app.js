@@ -97,12 +97,12 @@ MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, fu
   }
 
   function mergeProblemsWithContests() {
-    contestcollection.aggregate([{
+    problemcollection.aggregate([{
       $lookup: {
-        from: "problem",
-        localField: "id",
-        foreignField: "contestId",
-        as: "problems_in_contest"
+        from: "contest",
+        localField: "contestId",
+        foreignField: "id",
+        as: "problems_with_contest_details"
       }
     }]).toArray(function (err, res) {
       if (err) {
@@ -114,7 +114,7 @@ MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, fu
           if (db_insert_err) {
             throw db_insert_err
           } else {
-            console.log("problems in contest saved successfully at " + new Date())
+            console.log("problems with contest details saved successfully at " + new Date())
           }
         })
       })
