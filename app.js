@@ -23,12 +23,16 @@ MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, fu
   var db = database.db("codeforceshelper")
   var contestcollection = db.collection("contest")
   var problemcollection = db.collection("problem")
+  var problemsincontestcollection = db.collection("problems_in_contest")
 
-  fetchContests(contestcollection)
-  fetchProblems(problemcollection)
+  fetchContests()
+  fetchProblems()
   new CronJob('0 */6 * * *', function () {
-    fetchContests(contestcollection)
-    fetchProblems(problemcollection)
+    fetchContests()
+    fetchProblems()
+  }, null, true)
+  new CronJob('0 */1 * * *', function () {
+    mergeProblemsWithContests()
   }, null, true)
 
   app.get('/', function (req, res) {
@@ -51,44 +55,69 @@ MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, fu
   app.listen(process.env.PORT || 1729, process.env.IP, function () {
     console.log("starting server at " + new Date())
   })
+
+  function fetchContests() {
+    request(BASE_URL + 'contest.list', function (api_error, response, body) {
+      if (api_error) {
+        throw api_error
+      }
+
+      contests = JSON.parse(body).result
+        .filter(d => d.phase === 'FINISHED')
+        .sort((a, b) => (a.startTimeSeconds > b.startTimeSeconds) ? -1 : +1)
+      contestcollection.deleteMany({}).then(function () {
+        contestcollection.insertMany(contests, function (db_insert_err, result) {
+          if (db_insert_err) {
+            throw db_insert_err
+          } else {
+            console.log("contests saved successfully at " + new Date())
+          }
+        })
+      })
+    })
+  }
+
+  function fetchProblems() {
+    request(BASE_URL + 'problemset.problems', function (api_error, response, body) {
+      if (api_error) {
+        throw api_error
+      }
+
+      problems = JSON.parse(body).result.problems
+      problemcollection.deleteMany({}).then(function () {
+        problemcollection.insertMany(problems, function (db_insert_err, result) {
+          if (db_insert_err) {
+            throw db_insert_err
+          } else {
+            console.log("problems saved successfully at " + new Date())
+          }
+        })
+      })
+    })
+  }
+
+  function mergeProblemsWithContests() {
+    contestcollection.aggregate([{
+      $lookup: {
+        from: "problem",
+        localField: "id",
+        foreignField: "contestId",
+        as: "problems_in_contest"
+      }
+    }]).toArray(function (err, res) {
+      if (err) {
+        throw err
+      }
+
+      problemsincontestcollection.deleteMany({}).then(function () {
+        problemsincontestcollection.insertMany(res, function (db_insert_err, result) {
+          if (db_insert_err) {
+            throw db_insert_err
+          } else {
+            console.log("problems in contest saved successfully at " + new Date())
+          }
+        })
+      })
+    })
+  }
 })
-
-function fetchContests(contestcollection) {
-  request(BASE_URL + 'contest.list', function (api_error, response, body) {
-    if (api_error) {
-      throw api_error
-    }
-
-    contests = JSON.parse(body).result
-      .filter(d => d.phase === 'FINISHED')
-      .sort((a, b) => (a.startTimeSeconds > b.startTimeSeconds) ? -1 : +1)
-    contestcollection.deleteMany({}).then(function () {
-      contestcollection.insertMany(contests, function (db_insert_err, result) {
-        if (db_insert_err) {
-          throw db_insert_err
-        } else {
-          console.log("contests saved successfully at " + new Date())
-        }
-      })
-    })
-  })
-}
-
-function fetchProblems(problemcollection) {
-  request(BASE_URL + 'problemset.problems', function (api_error, response, body) {
-    if (api_error) {
-      throw api_error
-    }
-
-    problems = JSON.parse(body).result.problems
-    problemcollection.deleteMany({}).then(function () {
-      problemcollection.insertMany(problems, function (db_insert_err, result) {
-        if (db_insert_err) {
-          throw db_insert_err
-        } else {
-          console.log("problems saved successfully at " + new Date())
-        }
-      })
-    })
-  })
-}
