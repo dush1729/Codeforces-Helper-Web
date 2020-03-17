@@ -10,7 +10,6 @@ app.use(express.static(__dirname + "/"))
 
 var contestsLastUpdated = ls('contestsLastUpdated')
 if (!contestsLastUpdated || Date.now() - contestsLastUpdated > 24 * 60 * 60 * 1000) {
-  console.log(contestsLastUpdated)
   request(BASE_URL + 'contest.list', function (api_error, response, body) {
     if (api_error) {
       throw api_error
