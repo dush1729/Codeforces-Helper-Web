@@ -1,0 +1,39 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Codeforces Contests</title>
+    <script src="js/home.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/cyborg/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-l7xaoY0cJM4h9xh1RfazbgJVUZvdtyLWPueWNtLAphf/UbBgOVzqbOTogxPwYLHM" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/home.css">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-144934197-3"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'UA-144934197-3');
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="card w-50 border-primary bg-light center">
+            <div class="card-header">
+                Codeforces Helper
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Please enter your codeforces handle below</h5>
+                <input id="input" type="text" class="form-control" onkeypress="return keyPressed(event)" placeholder="handle">
+                <button id="button" onclick="clicked()" class="btn btn-primary btn-lg btn-block">Go!</button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

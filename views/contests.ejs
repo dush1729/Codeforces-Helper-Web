@@ -22,23 +22,26 @@
 </head>
 
 <body>
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             <div class="col">
-                <input class="form-control input-lg" type="text" id="contestInput" onkeyup="searchContests()" placeholder="Type here to search contest..">
+                <input class="form-control input-lg" type="text" id="contestInput" onkeyup="searchContests()"
+                    placeholder="Type here to search contest.." style="margin-top: 10px">
             </div>
         </div>
         <div class="row">
             <div class="col" id="contests_type">
                 <button onclick="filterContests('')" type="button" class="btn btn-outline-warning">All</button>
-                <button onclick="filterContests('Div. 1 + Div. 2')" type="button" class="btn btn-outline-primary">Div. 1 + Div. 2</button>
+                <button onclick="filterContests('Div. 1 + Div. 2')" type="button" class="btn btn-outline-primary">Div. 1
+                    + Div. 2</button>
                 <button onclick="filterContests('(Div. 2')" type="button" class="btn btn-outline-info">Div. 2</button>
                 <button onclick="filterContests('Div. 3')" type="button" class="btn btn-outline-success">Div. 3</button>
-                <button onclick="filterContests('Educational')" type="button" class="btn btn-outline-danger">Educational Round</button>
+                <button onclick="filterContests('Educational')" type="button" class="btn btn-outline-danger">Educational
+                    Round</button>
             </div>
         </div>
         <div class="row">
-            <div class="col">
+            <div class="col-4">
                 <iframe
                     src="https://ghbtns.com/github-btn.html?user=dush1729&repo=Codeforces-Helper-Web&type=watch&count=true&size=large"
                     frameborder="0" scrolling="0" width="170px" height="30px">
@@ -46,14 +49,46 @@
             </div>
         </div>
         <div class="row">
+            <div class="col" style="margin-bottom:10px">
+                <form class="form-inline" method="post" action="/contests">
+                    <input class="form-control" name="handle" type="text" placeholder="enter handle"
+                        <% if(handle) { %> value="<%= handle %>" <% } %>>
+                    <button type="submit" class="btn btn-primary" style="margin-left:10px">Fetch Profile</button>
+                </form>
+            </div>
+        </div>
+        <div class="row">
             <div class="col">
-                <ul id="contestsUL" class="list-group">
-                    <% for (var i = 0; i < contests.length;  i++) { %>
-                    <li class="list-group-item">
-                        <a href="https://codeforces.com/contest/<%= contests[i].id %>"><%= contests[i].name %></a>
-                    </li>
-                    <% } %>
-                </ul>
+                <table class="table table-bordered table-hover">
+                    <caption>List of users</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">Contest</th>
+                            <th scope="col">Problems</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for (var i = 0; i < contests.length;  i++) { %>
+                        <tr>
+                            <td>
+                                <a href="https://codeforces.com/contest/<%= contests[i].id %>"><%= contests[i].name %>
+                            </td>
+                            <td>
+                                <nav aria-label="...">
+                                    <ul class="pagination pagination-sm">
+                                        <% contests[i].problems.forEach(problem => { %>
+                                        <li class="page-item">
+                                            <a class="page-link <% if(problem[1]) { %> btn-success <% } else { %> btn-danger <% } %>"
+                                                href="https://codeforces.com/contest/<%= contests[i].id %>/problem/<%= problem[0] %>">
+                                                <%= problem[0] %></a></li>
+                                        <% }) %>
+                                    </ul>
+                                </nav>
+                            </td>
+                        </tr>
+                        <% } %>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
