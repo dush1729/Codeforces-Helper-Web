@@ -4,12 +4,10 @@
   "description": "codeforces helper web app",
   "main": "app.js",
   "dependencies": {
-    "cron": "^1.8.2",
+    "axios": "^0.19.2",
     "ejs": "^3.0.1",
     "express": "^4.17.1",
-    "local-storage": "^2.0.0",
-    "mongodb": "^3.5.2",
-    "request": "^2.88.0"
+    "mongodb": "^3.5.2"
   },
   "devDependencies": {},
   "scripts": {
