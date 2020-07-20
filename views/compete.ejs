@@ -1,0 +1,69 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Codeforces Contests</title>
+    <script src="js/compete.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/cyborg/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-l7xaoY0cJM4h9xh1RfazbgJVUZvdtyLWPueWNtLAphf/UbBgOVzqbOTogxPwYLHM" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/compete.css">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-144934197-3"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'UA-144934197-3');
+    </script>
+
+</head>
+
+<body>
+    <div class="container">
+        <form action="/compete" method="POST">
+            <div class="form-group">
+                <label for="exampleInputEmail1">Your handle</label>
+                <input type="text" class="form-control" name="user1" aria-describedby="emailHelp"
+                    placeholder="Please enter your handle here">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Your rival's handle</label>
+                <input type="text" class="form-control" name="user2" aria-describedby="emailHelp"
+                    placeholder="Please enter rival's your handle here">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+
+        <h3 style="color:green">Won: <%= won %></h3>
+        <h3 style="color:red">Lost: <%= lost %></h3>
+        <h3 style="color:blue">Draw: <%= draw %></h3>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Contest</th>
+                    <th scope="col">You</th>
+                    <th scope="col">Rival</th>
+                    <th scope="col">Result</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% data.forEach(contest => { %>
+                    <tr <% if(contest.rank1 < contest.rank2) { %> class="bg-success" <% } %> <% if(contest.rank1 > contest.rank2) { %>
+						class="bg-danger" <% } %> <% if(contest.rank1 == contest.rank2) { %> class="bg-primary" <% } %>>
+                        <th scope="row"><%= contest.contestName %></th>
+                        <td><%= contest.rank1 %></td>
+                        <td><%= contest.rank2 %></td>
+                        <td><%= contest.contestName %></td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+
+</html>
