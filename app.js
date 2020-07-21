@@ -1,8 +1,7 @@
 const express = require('express')
-const axios = require('axios')
+const bodyParser = require('body-parser')
 const app = express()
 var axios = require('axios')
-const e = require('express')
 
 const BASE_URL = "https://codeforces.com/api/"
 
@@ -27,7 +26,7 @@ app.get('/contests', function (req, res) {
 })
 
 app.get('/compete', function (req, res) {
-  res.render('compete', { contests: ls('contests') })
+  res.render('compete')
 })
 
 app.post('/compete', function (req, res) {
@@ -42,42 +41,53 @@ app.post('/compete', function (req, res) {
     var result2 = response2.data.result
 
     var contestIds = new Set()
-    var rank1 = {}
-    var rank2 = {}
+    var r1 = {}
+    var r2 = {}
     var contestName = {}
     result1.forEach(contest => {
       contestIds.add(contest.contestId)
-      rank1[contest.contestId] = contest.rank
+      r1[contest.contestId] = contest.rank
       contestName[contest.contestId] = contest.contestName
     })
     result2.forEach(contest => {
       contestIds.add(contest.contestId)
-      rank2[contest.contestId] = contest.rank
+      r2[contest.contestId] = contest.rank
       contestName[contest.contestId] = contest.contestName
     })
 
-    
+
     var finalResult = []
     var won = 0
     var lost = 0
     var draw = 0
-    contestIds.forEach( id => {
+    contestIds.forEach(id => {
+      var rank1 = parseInt(r1[id])
+      var rank2 = parseInt(r2[id])
+      var both = true
+      if (isNaN(rank1) || isNaN(rank2)) {
+        both = false
+      }
+
       finalResult.push({
         contestName: contestName[id],
         contestId: id,
-        rank1: parseInt(rank1[id]),
-        rank2: parseInt(rank2[id])
+        rank1: rank1,
+        rank2: rank2,
+        both: both
       })
-      if(parseInt(rank1[id]) < parseInt(rank2[id])) {
-        won += 1
-      } else if(parseInt(rank1[id]) > parseInt(rank2[id])) {
-        lost += 1
-      } else if(parseInt(rank1[id]) == parseInt(rank2[id])) {
-        draw += 1
+
+      if (both) {
+        if (rank1 < rank2) {
+          won += 1
+        } else if (rank1 > rank2) {
+          lost += 1
+        } else {
+          draw += 1
+        }
       }
     })
 
-    res.render('compete', {data: finalResult, won: won, lost: lost, draw: draw})
+    res.render('compete', { data: finalResult, won: won, lost: lost, draw: draw })
   })).catch(error => {
     console.log(error);
   });
