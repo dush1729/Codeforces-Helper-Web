@@ -72,8 +72,7 @@ app.post('/compete', function (req, res) {
         contestName: contestName[id],
         contestId: id,
         rank1: rank1,
-        rank2: rank2,
-        both: both
+        rank2: rank2
       })
 
       if (both) {
