@@ -68,14 +68,14 @@ app.post('/compete', function (req, res) {
         both = false
       }
 
-      finalResult.push({
-        contestName: contestName[id],
-        contestId: id,
-        rank1: rank1,
-        rank2: rank2
-      })
-
       if (both) {
+        finalResult.push({
+          contestName: contestName[id],
+          contestId: id,
+          rank1: rank1,
+          rank2: rank2
+        })
+
         if (rank1 < rank2) {
           won += 1
         } else if (rank1 > rank2) {
