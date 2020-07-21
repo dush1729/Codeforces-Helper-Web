@@ -86,6 +86,10 @@ app.post('/compete', function (req, res) {
       }
     })
 
+    finalResult.sort(function (contest1, contest2) {
+      return contest1.contestId - contest2.contestId
+    })
+
     res.render('compete', { data: finalResult, won: won, lost: lost, draw: draw })
   })).catch(error => {
     console.log(error);
