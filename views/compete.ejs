@@ -47,9 +47,12 @@
         </div>
 
         <% if (typeof data == 'object' && data) { %>
-        <h3 style="color:green">Won: <%= won %></h3>
-        <h3 style="color:red">Lost: <%= lost %></h3>
-        <h3 style="color:blue">Draw: <%= draw %></h3>
+
+        <ul class="list-group" style="width: 10rem;">
+            <li class="list-group-item" style="color:green; font-size: large;">Won : <%= won %></li>
+            <li class="list-group-item" style="color:red; font-size: large;">Lost : <%= lost %></li>
+            <li class="list-group-item" style="color:blue; font-size: large;">Draw : <%= draw %></li>
+        </ul>
 
         <table class="table">
             <thead>
