@@ -50,7 +50,6 @@
         <h3 style="color:green">Won: <%= won %></h3>
         <h3 style="color:red">Lost: <%= lost %></h3>
         <h3 style="color:blue">Draw: <%= draw %></h3>
-        <% } %>
 
         <table class="table">
             <thead>
@@ -61,7 +60,6 @@
                 </tr>
             </thead>
             <tbody>
-                <% if (typeof data == 'object' && data) { %>
                 <% data.forEach(contest => { %>
                 <tr <% if(contest.rank1 < contest.rank2) { %> style="background-color: #004830" <% } %>
                     <% if(contest.rank1 > contest.rank2) { %> style="background-color: #420D09" <% } %>
@@ -81,9 +79,9 @@
                         <% } %></td>
                 </tr>
                 <% }) %>
-                <% } %>
             </tbody>
         </table>
+        <% } %>
     </div>
 
 </body>
