@@ -91,7 +91,7 @@ app.post('/compete', function (req, res) {
       return contest1.contestId - contest2.contestId
     })
 
-    res.render('compete', { data: finalResult, won: won, lost: lost, draw: draw })
+    res.render('compete', { data: finalResult, won: won, lost: lost, draw: draw, user1: user1, user2: user2 })
   })).catch(error => {
     var message = "Something went wrong!"
     if (error.response.data && error.response.data.comment) {
