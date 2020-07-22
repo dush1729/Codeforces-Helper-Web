@@ -37,6 +37,7 @@ app.post('/compete', function (req, res) {
     axios.get(url + user1),
     axios.get(url + user2)
   ]).then(axios.spread((response1, response2) => {
+    console.log("Success: Successfully fetched contests for " + user1 + " and " + user2)
     var result1 = response1.data.result
     var result2 = response2.data.result
 
@@ -92,7 +93,12 @@ app.post('/compete', function (req, res) {
 
     res.render('compete', { data: finalResult, won: won, lost: lost, draw: draw })
   })).catch(error => {
-    console.log(error);
+    var message = "Something went wrong!"
+    if (error.response.data && error.response.data.comment) {
+      message = error.response.data.comment
+    }
+    console.log(message)
+    res.render('compete', { error: message })
   });
 });
 

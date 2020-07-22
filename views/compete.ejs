@@ -23,6 +23,13 @@
 
 <body>
     <div class="container">
+
+        <% if (typeof error == 'string' && error) { %>
+        <div class="alert alert-warning" role="alert">
+            <%= error %>
+        </div>
+        <% } %>
+
         <form action="/compete" method="POST">
             <div class="form-group">
                 <label for="exampleInputEmail1">Your handle</label>
