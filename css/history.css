@@ -1,0 +1,28 @@
+input[type=text] {
+    margin-top: 10px;
+}
+
+iframe {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#contests_type {
+    margin-top: 10px;
+}
+
+.card {
+    padding: 20px;
+}
+
+button {
+    margin-top: 20px;
+}
+
+.alert {
+    margin-top: 10px;
+}
+
+table {
+    margin-top: 10px;
+}

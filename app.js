@@ -2,6 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
 var axios = require('axios')
+const { response } = require('express')
 
 const BASE_URL = "https://codeforces.com/api/"
 
@@ -15,6 +16,7 @@ app.get('/', function (req, res) {
   res.redirect("contests")
 })
 
+// Contests
 app.get('/contests', function (req, res) {
   axios.get(BASE_URL + 'contest.list').then(response => {
     var contests = response.data.result
@@ -25,6 +27,46 @@ app.get('/contests', function (req, res) {
   })
 })
 
+//History
+app.get('/history', function (req, res) {
+  res.render('history')
+})
+
+app.post('/history', function (req, res) {
+  var contestFilter = req.body.contestFilter.toUpperCase()
+
+  axios.get(BASE_URL + 'user.rating?handle=' + req.body.handle).then(response => {
+    var contests = response.data.result
+    contests = contests
+      .filter(d => d.contestName.toUpperCase().indexOf(contestFilter) != -1)
+      .sort((a, b) => (a.contestId > b.contestId) ? -1 : +1)
+
+
+    var positive = 0
+    var negative = 0
+    var zero = 0
+    contests.forEach(contest => {
+      if (contest.oldRating < contest.newRating) {
+        positive += 1
+      } else if (contest.oldRating > contest.newRating) {
+        negative += 1
+      } else {
+        zero += 1
+      }
+    })
+
+    res.render('history', { contests: contests, positive: positive, negative: negative, zero: zero })
+  }).catch(error => {
+    var message = "Something went wrong!"
+    if (error.response && error.response.data && error.response.data.comment) {
+      message = error.response.data.comment
+    }
+    console.log(message)
+    res.render('history', { error: message })
+  });
+})
+
+//Compete
 app.get('/compete', function (req, res) {
   res.render('compete')
 })
