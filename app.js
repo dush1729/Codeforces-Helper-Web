@@ -23,13 +23,13 @@ app.get('/contests', function (req, res) {
     contests = contests
       .filter(d => d.phase === 'FINISHED')
       .sort((a, b) => (a.startTimeSeconds > b.startTimeSeconds) ? -1 : +1)
-    res.render('contests', { contests: contests })
+    res.render('contests', { endpoint: 'contests', contests: contests })
   })
 })
 
 //History
 app.get('/history', function (req, res) {
-  res.render('history')
+  res.render('history', {endpoint: 'history'})
 })
 
 app.post('/history', function (req, res) {
@@ -68,7 +68,7 @@ app.post('/history', function (req, res) {
 
 //Compete
 app.get('/compete', function (req, res) {
-  res.render('compete')
+  res.render('compete', {endpoint: 'compete'})
 })
 
 app.post('/compete', function (req, res) {
