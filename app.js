@@ -37,6 +37,7 @@ app.post('/history', function (req, res) {
   var handle = req.body.handle
 
   axios.get(BASE_URL + 'user.rating?handle=' + handle).then(response => {
+    console.log("History(Success): Contest filter: " + contestFilter + " Handle: " + handle)
     var contests = response.data.result
     contests = contests
       .filter(d => d.contestName.toUpperCase().indexOf(contestFilter) != -1)
@@ -69,7 +70,7 @@ app.post('/history', function (req, res) {
     if (error.response && error.response.data && error.response.data.comment) {
       message = error.response.data.comment
     }
-    console.log(message)
+    console.log("History(Error): " + message)
     res.render('history', { endpoint: 'history', error: message })
   });
 })
@@ -87,7 +88,7 @@ app.post('/compete', function (req, res) {
     axios.get(url + user1),
     axios.get(url + user2)
   ]).then(axios.spread((response1, response2) => {
-    console.log("Success: Successfully fetched contests for " + user1 + " and " + user2)
+    console.log("Compete(Success): Fetched contests for " + user1 + " and " + user2)
     var result1 = response1.data.result
     var result2 = response2.data.result
 
@@ -155,7 +156,7 @@ app.post('/compete', function (req, res) {
     if (error.response.data && error.response.data.comment) {
       message = error.response.data.comment
     }
-    console.log(message)
+    console.log("Compete(Error): " + message)
     res.render('compete', { endpoint: 'compete', error: message })
   });
 });
