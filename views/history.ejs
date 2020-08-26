@@ -4,11 +4,11 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Codeforces Contests</title>
+    <title>Codeforces Helper</title>
     <script src="js/contests.js"></script>
     <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/cyborg/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-l7xaoY0cJM4h9xh1RfazbgJVUZvdtyLWPueWNtLAphf/UbBgOVzqbOTogxPwYLHM" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/history.css">
+    <link rel="stylesheet" href="css/style.css">
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-144934197-3"></script>
@@ -34,24 +34,23 @@
         <div class="card">
             <form action="/history" method="POST">
 
-                <input class="form-control input-lg" type="text" name="contestFilter"
-                    placeholder="Type here to filter contests..">
+                <div class="form-group">
+                    <label>Contest Filter</label>
+                    <input class="form-control input-lg" type="text" name="contestFilter"
+                        placeholder="Example: edu, div. 3, div. 1 + .." <% if(typeof contestFilter != 'undefined')  { %>
+                        value="<%= contestFilter %>" <% } %>>
+                </div>
 
-                <input class="form-control input" type="text" name="handle" id="handleInput"
-                    placeholder="Please enter your handle if you want to see rating changes">
+                <div class="form-group">
+                    <label>Your handle</label>
+                    <input class="form-control input" type="text" name="handle" id="handleInput"
+                        placeholder="Please enter your handle" <% if(typeof handle != 'undefined')  { %>
+                        value="<%= handle %>" <% } %>>
+                </div>
 
 
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
-        </div>
-
-        <div class="row">
-            <div class="col">
-                <iframe
-                    src="https://ghbtns.com/github-btn.html?user=dush1729&repo=Codeforces-Helper-Web&type=watch&count=true&size=large"
-                    frameborder="0" scrolling="0" width="170px" height="30px">
-                </iframe>
-            </div>
         </div>
 
         <% if(typeof contests != 'undefined') { %>

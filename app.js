@@ -29,18 +29,18 @@ app.get('/contests', function (req, res) {
 
 //History
 app.get('/history', function (req, res) {
-  res.render('history', {endpoint: 'history'})
+  res.render('history', { endpoint: 'history' })
 })
 
 app.post('/history', function (req, res) {
   var contestFilter = req.body.contestFilter.toUpperCase()
+  var handle = req.body.handle
 
-  axios.get(BASE_URL + 'user.rating?handle=' + req.body.handle).then(response => {
+  axios.get(BASE_URL + 'user.rating?handle=' + handle).then(response => {
     var contests = response.data.result
     contests = contests
       .filter(d => d.contestName.toUpperCase().indexOf(contestFilter) != -1)
       .sort((a, b) => (a.contestId > b.contestId) ? -1 : +1)
-
 
     var positive = 0
     var negative = 0
@@ -55,20 +55,28 @@ app.post('/history', function (req, res) {
       }
     })
 
-    res.render('history', { contests: contests, positive: positive, negative: negative, zero: zero })
+    res.render('history', {
+      endpoint: 'history',
+      contests: contests,
+      contestFilter: contestFilter,
+      handle: handle,
+      positive: positive,
+      negative: negative,
+      zero: zero
+    })
   }).catch(error => {
     var message = "Something went wrong!"
     if (error.response && error.response.data && error.response.data.comment) {
       message = error.response.data.comment
     }
     console.log(message)
-    res.render('history', { error: message })
+    res.render('history', { endpoint: 'history', error: message })
   });
 })
 
 //Compete
 app.get('/compete', function (req, res) {
-  res.render('compete', {endpoint: 'compete'})
+  res.render('compete', { endpoint: 'compete' })
 })
 
 app.post('/compete', function (req, res) {
@@ -133,14 +141,22 @@ app.post('/compete', function (req, res) {
       return contest2.contestId - contest1.contestId
     })
 
-    res.render('compete', { data: finalResult, won: won, lost: lost, draw: draw, user1: user1, user2: user2 })
+    res.render('compete', {
+      endpoint: 'compete',
+      data: finalResult,
+      won: won,
+      lost: lost,
+      draw: draw,
+      user1: user1,
+      user2: user2
+    })
   })).catch(error => {
     var message = "Something went wrong!"
     if (error.response.data && error.response.data.comment) {
       message = error.response.data.comment
     }
     console.log(message)
-    res.render('compete', { error: message })
+    res.render('compete', { endpoint: 'compete', error: message })
   });
 });
 

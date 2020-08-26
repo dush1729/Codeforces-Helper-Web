@@ -3,8 +3,7 @@ form {
 }
 
 table {
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 10px;
 }
 
 h3 {
@@ -13,6 +12,14 @@ h3 {
 
 iframe {
     margin-top: 10px;
+}
+
+button {
+    margin-top: 10px;
+}
+
+.card {
+    padding: 10px;
 }
 
 .list-group {
