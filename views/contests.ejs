@@ -38,29 +38,67 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col" id="contests_type">
-                    <button onclick="filterContests('')" type="button" class="btn btn-outline-warning">All</button>
-                    <button onclick="filterContests('Div. 1 + Div. 2')" type="button"
+                <div class="col">
+                    <button onclick="filterContests('', 0)" type="button" class="btn btn-outline-warning">All</button>
+                    <button onclick="filterContests('Div. 1 + Div. 2', 0)" type="button"
                         class="btn btn-outline-primary">Div. 1 + Div. 2</button>
-                    <button onclick="filterContests('(Div. 2')" type="button" class="btn btn-outline-info">Div.
+                    <button onclick="filterContests('(Div. 2', 0)" type="button" class="btn btn-outline-info">Div.
                         2</button>
-                    <button onclick="filterContests('Div. 3')" type="button" class="btn btn-outline-success">Div.
+                    <button onclick="filterContests('Div. 3', 0)" type="button" class="btn btn-outline-success">Div.
                         3</button>
-                    <button onclick="filterContests('Educational')" type="button"
+                    <button onclick="filterContests('Educational', 0)" type="button"
                         class="btn btn-outline-danger">Educational Round</button>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col">
+                    <form action="/contests" method="POST">
+                        <div class="form-group">
+                            <label>Your handle</label>
+                            <input class="form-control input" type="text" name="handle" id="handleInput"
+                                placeholder="Please enter your handle" <% if(typeof
+                                handle !='undefined' ) { %>
+                            value="<%= handle %>" <% } %>>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <input class="form-control input-lg" type="text" id="participationTypeInput" onkeyup="searchContests()"
+                        placeholder="Participation type filter">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <button onclick="filterContests('', 1)" type="button" class="btn btn-outline-warning">All</button>
+                    <button onclick="filterContests('Contestant', 1)" type="button" class="btn btn-outline-primary">Contestant</button>
+                    <button onclick="filterContests('Out of competition', 1)" type="button" class="btn btn-outline-info">Out of competition</button>
+                    <button onclick="filterContests('Virtual', 1)" type="button" class="btn btn-outline-success">Virtual</button>
+                    <button onclick="filterContests('Practice', 1)" type="button"class="btn btn-outline-danger">Practice</button>
                 </div>
             </div>
         </div>
 
         <div class="row">
             <div class="col">
-                <ul id="contestsUL" class="list-group">
+                <table id="contestsTable" class="table table-active table-hover">
+                    <tr>
+                        <th>Contests</th>
+                        <th>Type</th>
+                    </tr>
                     <% for (var i = 0; i < contests.length;  i++) { %>
-                    <li class="list-group-item">
-                        <a href="https://codeforces.com/contest/<%= contests[i].id %>"><%= contests[i].name %></a>
-                    </li>
+                        <tr>
+                            <td><a href="https://codeforces.com/contest/<%= contests[i].id %>"><%= contests[i].name %></a></td>
+                            <td><%= contests[i].participantType %></td>
+                        </tr>
                     <% } %>
-                </ul>
+                </table>
             </div>
         </div>
     </div>

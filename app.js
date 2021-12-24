@@ -19,11 +19,75 @@ app.get('/', function (req, res) {
 // Contests
 app.get('/contests', function (req, res) {
   axios.get(BASE_URL + 'contest.list').then(response => {
+    console.log("Contests(Success): Fetched all contests")
     var contests = response.data.result
     contests = contests
       .filter(d => d.phase === 'FINISHED')
       .sort((a, b) => (a.startTimeSeconds > b.startTimeSeconds) ? -1 : +1)
     res.render('contests', { endpoint: 'contests', contests: contests })
+  })
+})
+
+app.post('/contests', function (req, res) {
+  var handle = req.body.handle
+  console.log(handle)
+
+  axios.all([
+    axios.get(BASE_URL + 'contest.list'),
+    axios.get(BASE_URL + 'user.status?handle=' + handle)
+  ]).then(axios.spread((response1, response2) => {
+    console.log("Contests(Success): Fetched submissions for " + handle)
+
+    var contestant = new Set()
+    var practice = new Set()
+    var virtual = new Set()
+    var outOfComppetition = new Set()
+    response2.data.result.forEach(contest => {
+      var participantType = contest.author.participantType
+      var id = contest.contestId
+      if(participantType == "CONTESTANT") {
+        contestant.add(id)
+      } else if(participantType == "OUT_OF_COMPETITION") {
+        outOfComppetition.add(id)
+      } else if(participantType == "VIRTUAL") {
+        virtual.add(id)
+      } else if(participantType == "PRACTICE") {
+        practice.add(id)
+      }
+    })
+
+    var contests = []
+    response1.data.result
+    .filter(d => d.phase === 'FINISHED')
+    .sort((a, b) => (a.startTimeSeconds > b.startTimeSeconds) ? -1 : +1)
+    .forEach(contest => {
+      var id = contest.id
+      var participantType = ""
+      if(contestant.has(id)) {
+        participantType = "Contestant"
+      } else if(outOfComppetition.has(id)) {
+        participantType = "Out of competition"
+      } else if(virtual.has(id)) {
+        participantType = "Virtual"
+      } else if(practice.has(id)) {
+        participantType = "Practice"
+      }
+
+      contests.push({
+        id: id,
+        name: contest.name,
+        participantType: participantType
+      })
+    })
+
+    res.render('contests', {endpoint: 'contests', contests: contests, handle: handle})
+  })).catch(error => {
+    var message = "Something went wrong!"
+    if (error.response && error.response.data && error.response.data.comment) {
+      message = error.response.data.comment
+    }
+    console.log("Contests(Error): " + message)
+    res.render('contests', { endpoint: 'contests', error: message })
   })
 })
 
